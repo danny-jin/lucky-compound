@@ -9,7 +9,8 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly configService: ConfigService,
-  ) {}
+  ) {
+  }
 
   @Get()
   async getHello(): Promise<string> {

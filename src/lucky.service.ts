@@ -11,7 +11,7 @@ export class LuckyService {
     private readonly configService: ConfigService,
   ) {}
 
-  @Cron('*/5 * * * *')
+  @Cron('0 */5 * * * *')
   async handleCron() {
     if (!this.configService.getIsRunning()) {
       return;

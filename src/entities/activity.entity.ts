@@ -1,10 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { HatchMode } from '../types';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, } from 'typeorm';
 
 @Entity()
 export class Activity {
@@ -13,9 +7,6 @@ export class Activity {
 
   @CreateDateColumn()
   createdAt: Date;
-
-  @Column({ type: 'enum', enum: HatchMode })
-  mode: HatchMode;
 
   @Column()
   beanRewards: string;

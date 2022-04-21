@@ -9,23 +9,31 @@ import {
   LCAddress,
   LCDiceAddress,
   LuckyLCAddress,
-  MasterChefAddress,
   luckyReferrer,
+  MasterChefAddress,
   RouterAddress,
   RPC_URL,
   wbnbAddress,
 } from './consts';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Withdrawal } from './entities/withdrawal.entity';
-import { Repository } from 'typeorm';
 import { transformPvKey } from './utils';
 
 @Injectable()
 export class WalletService {
-  constructor(
-    @InjectRepository(Withdrawal)
-    private withdrawalRepository: Repository<Withdrawal>,
-  ) {}
+  constructor() {}
+
+  static getTokenBalance(
+    address: string,
+    contractAddress: string,
+  ): Promise<BigNumber> {
+    const provider = new providers.JsonRpcProvider(RPC_URL);
+    const tokenContract = new Contract(contractAddress, bep20Abi, provider);
+    return tokenContract.balanceOf(address);
+  }
+
+  private static getWallet(pvKey: string): Wallet {
+    const provider = new providers.JsonRpcProvider(RPC_URL);
+    return new Wallet(pvKey, provider);
+  }
 
   async getPendingLC(address: string): Promise<BigNumber> {
     const contract = this.getMasterChefContract();
@@ -98,20 +106,6 @@ export class WalletService {
   async getWalletBalance(address: string): Promise<BigNumber> {
     const provider = new providers.JsonRpcProvider(RPC_URL);
     return provider.getBalance(address);
-  }
-
-  private static getWallet(pvKey: string): Wallet {
-    const provider = new providers.JsonRpcProvider(RPC_URL);
-    return new Wallet(pvKey, provider);
-  }
-
-  static getTokenBalance(
-    address: string,
-    contractAddress: string,
-  ): Promise<BigNumber> {
-    const provider = new providers.JsonRpcProvider(RPC_URL);
-    const tokenContract = new Contract(contractAddress, bep20Abi, provider);
-    return tokenContract.balanceOf(address);
   }
 
   private getMasterChefContract(): Contract {
