@@ -48,8 +48,10 @@ export class LuckyService {
     await this.walletService.harvestLC();
     const stakingBalance = await this.walletService.getWalletBalance(address);
     if (stakingBalance.lt(MIN_STAKING_WALLET_BALANCE)) {
+      console.log('Swapped BNB for Gas: ', new Date().toISOString());
       await this.walletService.swapLCToBNB();
     } else {
+      console.log('Staked LuckyLC: ', new Date().toISOString());
       await this.walletService.bankLC();
       await this.walletService.stakeLuckyLC();
     }
