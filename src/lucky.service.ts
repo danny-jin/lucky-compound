@@ -31,6 +31,7 @@ export class LuckyService {
     const lcBalance = await WalletService.getTokenBalance(address, LCAddress);
 
     if (lcBalance.gte(MIN_LC_COMPOUND)) {
+      console.log('LC Banked: ', new Date().toISOString());
       await this.walletService.bankLC();
       await this.walletService.stakeLuckyLC();
       return;
