@@ -42,7 +42,7 @@ export class WalletService {
 
   async isTablePaused(): Promise<boolean> {
     const contract = this.getLCDiceContract();
-    return contract.paused;
+    return contract.paused();
   }
 
   async harvestLC(): Promise<void> {

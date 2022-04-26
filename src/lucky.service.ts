@@ -15,13 +15,14 @@ export class LuckyService {
     private readonly configService: ConfigService,
   ) {}
 
-  @Cron('0 */5 * * * *')
+  @Cron('0 */3 * * * *')
   async handleCron() {
     if (!this.configService.getIsRunning()) {
       return;
     }
+    console.log('--------Cron is running');
     const isPaused = await this.walletService.isTablePaused();
-
+    console.log('isPaused: ', isPaused);
     // do cron only when the lc dice table is paused
     if (!isPaused) {
       return;
@@ -29,7 +30,7 @@ export class LuckyService {
     const { address } = this.walletService.getStakingWallet();
 
     const lcBalance = await WalletService.getTokenBalance(address, LCAddress);
-
+    console.log('lcBalance = ', lcBalance.toString());
     if (lcBalance.gte(MIN_LC_COMPOUND)) {
       console.log('LC Banked: ', new Date().toISOString());
       await this.walletService.bankLC();
