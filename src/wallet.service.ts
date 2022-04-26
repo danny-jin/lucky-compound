@@ -55,7 +55,7 @@ export class WalletService {
     const stakingWallet = this.getStakingWallet();
     const lcBalance = await WalletService.getTokenBalance(
       stakingWallet.address,
-      LCDiceAddress,
+      LCAddress,
     );
     if (lcBalance.gt(0)) {
       const bnbAmountOut = await this.getBNBAmountOut(lcBalance);
@@ -65,7 +65,7 @@ export class WalletService {
       await router.swapExactTokensForETH(
         lcBalance.toString(),
         bnbAmountOut.toString(),
-        [LCDiceAddress, wbnbAddress],
+        [LCAddress, wbnbAddress],
         stakingWallet.address,
         now.getTime(),
       );
