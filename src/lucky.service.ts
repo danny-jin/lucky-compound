@@ -30,11 +30,12 @@ export class LuckyService {
     const { address } = this.walletService.getStakingWallet();
 
     const lcBalance = await WalletService.getTokenBalance(address, LCAddress);
-    console.log('lcBalance = ', lcBalance.toString());
+    console.log('LC Balance = ', lcBalance.toString());
     if (lcBalance.gte(MIN_LC_COMPOUND)) {
-      console.log('LC Banked: ', new Date().toISOString());
+      console.log('LC Banked Starting: ', new Date().toISOString());
       await this.walletService.bankLC();
       await this.walletService.stakeLuckyLC();
+      console.log('LC Banked Ending: ', new Date().toISOString());
       return;
     }
 
@@ -49,12 +50,14 @@ export class LuckyService {
     await this.walletService.harvestLC();
     const stakingBalance = await this.walletService.getWalletBalance(address);
     if (stakingBalance.lt(MIN_STAKING_WALLET_BALANCE)) {
-      console.log('Swapped BNB for Gas: ', new Date().toISOString());
+      console.log('Swapped BNB for Gas Starting: ', new Date().toISOString());
       await this.walletService.swapLCToBNB();
+      console.log('Swapped BNB for Gas Ending: ', new Date().toISOString());
     } else {
-      console.log('Staked LuckyLC: ', new Date().toISOString());
+      console.log('Staked LuckyLC Starting: ', new Date().toISOString());
       await this.walletService.bankLC();
       await this.walletService.stakeLuckyLC();
+      console.log('Staked LuckyLC Ending: ', new Date().toISOString());
     }
   }
 }
