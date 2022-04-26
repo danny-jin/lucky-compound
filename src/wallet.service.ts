@@ -77,7 +77,7 @@ export class WalletService {
     const stakingWallet = this.getStakingWallet();
     const lcBalance = await WalletService.getTokenBalance(
       stakingWallet.address,
-      LCDiceAddress,
+      LCAddress,
     );
     const tx = await diceContract.deposit(lcBalance.toString());
     await tx.wait();
